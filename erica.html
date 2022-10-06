@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Tables</title>
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+  <style>
+    body {
+      background-color: rgba(255, 255, 128, .5);
+    }
+    .container {
+
+      box-shadow: 0 0 15px;
+      border-radius: 10px;
+      padding: 20px;
+      background-color: white;
+    }
+    h1 {
+      text-align: center;
+      margin:80px 0px;
+      font-family: 'Times New Roman', Times, serif;
+      font-size: 3rem;
+      font-weight: bolder;
+    }
+    .form-group {
+      margin:20px 0 ;
+    }
+    label {
+      margin-bottom: 5px;
+    }
+  </style>
+</head>
+<body>
+   <h1>Erica Store Product List for October 2022</h1>
+    <div id="productTable"></div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Product Details</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       <form>
+          <div class="form-group">
+            <label for="prdcd">Product Code</label>
+            <input type="number" class="form-control" id="prdcd">
+          </div>
+          <div class="form-group">
+            <label for="prd">Product</label>
+            <input type="text" class="form-control" id="prd">
+          </div>
+           <div class="form-group">
+            <label for="price">Price</label>
+            <input type="number" class="form-control" id="price">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script> 
+  <script>
+    const products = [
+        {id:1, prdcd:'0001', prd:'Ariel detergent', price:'15'},
+        {id:2, prdcd:'0002', prd:'Tide detergent', price:'15'},
+        {id:3, prdcd:'0003', prd:'kopiko blanca', price:'14'},
+        {id:4, prdcd:'0004', prd:'milo', price:'10'},
+        {id:5, prdcd:'0005', prd:'Pancit Canton', price:'15'},
+        {id:6, prdcd:'0006', prd:'Palmolive Shampoo', price:'7'},
+        {id:7, prdcd:'0007', prd:'CreamSilk', price:'8'},
+        {id:8, prdcd:'0008', prd:'Oreo Biscuit', price:'8'},
+        {id:9, prdcd:'0009', prd:'Piattos', price:'15'},
+        {id:10, prdcd:'0010', prd:'Coke Mismo', price:'17'},
+        {id:11, prdcd:'0011', prd:'Nescafe Black', price:'25'},
+        {id:12, prdcd:'0012', prd:'Marlboro Red', price:'10'},
+        
+    ];
+
+    function displayproducts() {
+      var mytable = `
+                  <div class="container">
+                    <table id="myTable" class="table table-striped">
+                      <thead>
+                        <th>Product Code</th>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Option</th>
+                      </thead>
+                      <tbody>
+                        `;
+        for (var product of products) {  
+              mytable += "<tr><td>" + product.prdcd + "</td><td>" + product.prd + "</td><td>" + product.price + `</td><td><button class="btn btn-outline-dark" data-toggle="modal" data-target="#exampleModalCenter" onclick='log(`+ product.id +`)'>Show Info.</button></td></tr>`; 
+        }
+
+        mytable += `
+                  </tbody>
+                </table>
+                </div>`;
+        document.getElementById("productTable").innerHTML = mytable;
+
+    }
+    displayproducts();
+
+    function log(id) {
+      let product = products.filter((i) => i.id == id)
+          $("#exampleModal").modal();
+          assignValueToInput(product);
+    }
+
+    function assignValueToInput(product) {
+          document.getElementById('prdcd').value = product[0].prdcd;
+          document.getElementById('prd').value = product[0].prd;
+          document.getElementById('price').value = product[0].price;
+    }
+  </script>
+   <script>
+    $(document).ready( function () {
+      $('#myTable').DataTable();
+      } );
+  </script>
+
+  
+
+
+</body>
+</html>
